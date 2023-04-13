@@ -32,7 +32,18 @@ class CallToApi {
         throw Exception('Failed to load weather data 1');
       }
     } catch (e) {
-      throw Exception('Failed to load weather data 2');
+     //throw Exception('Failed to load weather data 2');
+
+      var url = Uri.https('api.openweathermap.org', '/data/2.5/weather',
+            {"lat": "41.015137", "lon": "28.979530", "appid": apiKey});
+        final http.Response response = await http.get(url);
+        log(response.body.toString());
+        if (response.statusCode == 200) {
+          final Map<String, dynamic> decodedJson = json.decode(response.body);
+          return WeatherModel.fromMap(decodedJson);
+        } else {
+          throw Exception('Failed to load weather data 1');
+        }
     }
   }
 
